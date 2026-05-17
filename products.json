@@ -239,6 +239,14 @@
       "price": 250,
       "image": "css/Imagens/whatsapp-image-2026-03-24-at-23.29.22-11-.jpeg",
       "category": "personagens"
+    },
+    {
+      "id": 40,
+      "title": "Ds",
+      "price": 1,
+      "description": "Teste",
+      "category": "fe",
+      "image": "css/Imagens/1779055779174-03e8c854-6acc-4a7b-892c-6a42e5309bde.jpeg"
     }
   ]
 }
