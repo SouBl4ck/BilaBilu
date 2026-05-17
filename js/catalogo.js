@@ -178,31 +178,53 @@
         document.body.style.overflow = '';
     }
 
+    // ===== HELPERS DE TEXTO =====
+    function escapeHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function shortDesc(text) {
+        if (!text) return '';
+        const firstLine = text.split('\n').find(l => l.trim()) || '';
+        return firstLine.length > 110 ? firstLine.slice(0, 107) + '...' : firstLine;
+    }
+    function whatsappLinkFor(product) {
+        const msg = `Olá! Tenho interesse no produto *${product.title}* (${formatBRL(product.price)}). Pode me passar mais informações?`;
+        return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+    }
+
     // ===== RENDERIZAÇÃO DOS PRODUTOS =====
     function renderProducts(containerId, items) {
         const container = document.getElementById(containerId);
         if (!container) return;
         container.innerHTML = '';
         if (!items.length) {
-            container.innerHTML = '<p style="text-align:center; padding:2rem;">Nenhum produto nesta categoria.</p>';
+            container.innerHTML = '<p style="text-align:center; padding:2rem; color:#8c6b66;">Nenhum produto nesta categoria.</p>';
             return;
         }
         items.forEach(item => {
             const card = document.createElement('div');
             card.className = 'product-card';
+            card.dataset.id = item.id;
+            card.dataset.title = (item.title || '').toLowerCase();
+            card.dataset.cat = item.category || '';
             card.innerHTML = `
-                <div class="product-image"><img src="${item.image}" alt="${item.title}" loading="lazy"></div>
+                <span class="product-badge"><i class="fas fa-hand-holding-heart"></i> Sob encomenda</span>
+                <div class="product-image"><img src="${item.image}" alt="${escapeHtml(item.title)}" loading="lazy"></div>
                 <div class="product-info">
-                    <h3>${item.title}</h3>
-                    <p>${item.description}</p>
+                    <h3>${escapeHtml(item.title)}</h3>
+                    <p>${escapeHtml(shortDesc(item.description))}</p>
                     <span class="price">${formatBRL(item.price)}</span>
+                    <span class="price-hint"><i class="fas fa-truck"></i> Frete calculado por CEP</span>
                     <div class="product-actions">
                         <button class="btn view-product" data-id="${item.id}">
                             <i class="fas fa-eye"></i> Ver Detalhes
                         </button>
                         <button class="btn-add-cart" data-addcart="${item.id}">
-                            <i class="fas fa-shopping-bag"></i> Adicionar
+                            <i class="fas fa-shopping-bag"></i> Carrinho
                         </button>
+                        <a class="btn-whatsapp-card" href="${whatsappLinkFor(item)}" target="_blank" rel="noopener" data-wa="${item.id}">
+                            <i class="fab fa-whatsapp"></i> Comprar
+                        </a>
                     </div>
                 </div>
             `;
@@ -251,29 +273,47 @@
     const modalContent = document.getElementById('modal-content');
     const closeModal = document.querySelector('.close-modal');
 
+    const CATEGORY_LABELS = {
+        fe:          'Cantinho da fé',
+        bebe:        'Cantinho do bebê',
+        personagens: 'Personagens'
+    };
+
     document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('view-product')) {
-            const id = parseInt(e.target.dataset.id);
-            const product = allProducts[id];
-            if (product) {
-                modalContent.innerHTML = `
-                    <div style="text-align:center; background:#fff5f2; border-radius:15px; padding:0.8rem; margin-bottom:1rem;">
-                        <img src="${product.image}" alt="${product.title}"
-                            style="max-width:100%; max-height:260px; width:auto; height:auto;
-                                   object-fit:contain; border-radius:10px; display:block; margin:0 auto;">
+        const trigger = e.target.closest('.view-product');
+        if (!trigger) return;
+        const id = parseInt(trigger.dataset.id);
+        const product = allProducts[id];
+        if (!product) return;
+        const catLabel = CATEGORY_LABELS[product.category] || product.category || '';
+        modalContent.innerHTML = `
+            <div class="modal-product">
+                <div class="modal-product-img">
+                    <img src="${product.image}" alt="${escapeHtml(product.title)}">
+                </div>
+                <div>
+                    ${catLabel ? `<span class="modal-product-cat">${escapeHtml(catLabel)}</span>` : ''}
+                    <h2 class="modal-product-title">${escapeHtml(product.title)}</h2>
+                    <p class="modal-product-desc">${escapeHtml(product.description || '')}</p>
+                    <p class="modal-product-price">${formatBRL(product.price)}</p>
+                    <span class="modal-price-hint">Pagamento combinado via WhatsApp</span>
+                    <div class="modal-meta">
+                        <span class="modal-meta-item"><i class="fas fa-hand-holding-heart"></i> Sob encomenda</span>
+                        <span class="modal-meta-item"><i class="fas fa-truck"></i> Frete por CEP</span>
+                        <span class="modal-meta-item"><i class="fas fa-gem"></i> 100% algodão</span>
                     </div>
-                    <h2 style="font-family:'Playfair Display',serif; color:var(--medio); margin-bottom:0.6rem;">${product.title}</h2>
-                    <p style="color:#555; line-height:1.7; margin-bottom:1rem;">${product.description}</p>
-                    <p class="price" style="margin-bottom:1rem;">${formatBRL(product.price)}</p>
                     <div class="modal-actions">
-                        <button class="btn" id="modal-add-btn" data-addcart="${product.id}">
-                            <i class="fas fa-shopping-bag"></i> Adicionar ao Carrinho
+                        <button class="btn" data-addcart="${product.id}">
+                            <i class="fas fa-shopping-bag"></i> Carrinho
                         </button>
+                        <a class="btn-whatsapp-card" href="${whatsappLinkFor(product)}" target="_blank" rel="noopener">
+                            <i class="fab fa-whatsapp"></i> Comprar pelo WhatsApp
+                        </a>
                     </div>
-                `;
-                modal.classList.add('active');
-            }
-        }
+                </div>
+            </div>
+        `;
+        modal.classList.add('active');
     });
 
     closeModal.addEventListener('click', () => modal.classList.remove('active'));
@@ -339,51 +379,155 @@
         });
     }
 
-    
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.x += p.speedX; p.y += p.speedY;
-            if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-            if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.fill();
-        });
-        requestAnimationFrame(animateParticles);
-    }
-    window.addEventListener('resize', initParticles);
-    initParticles();
-    animateParticles();
+    // ===== BUSCA E FILTROS DO CATÁLOGO =====
+    const searchInput   = document.getElementById('catalog-search-input');
+    const searchClear   = document.getElementById('catalog-search-clear');
+    const filterChips   = document.querySelectorAll('.catalog-chip');
+    const sections      = document.querySelectorAll('.catalog-section');
+    const emptyState    = document.getElementById('catalog-empty');
+    const emptyTerm     = document.getElementById('catalog-empty-term');
+    const emptyClearBtn = document.getElementById('catalog-empty-clear');
 
-    // Rastro do mouse
-    const trailCanvas = document.createElement('canvas');
-    trailCanvas.id = 'mouse-trail';
-    document.body.appendChild(trailCanvas);
-    const trailCtx = trailCanvas.getContext('2d');
-    let mouseX = 0, mouseY = 0, trailPositions = [];
-    function initTrail() {
-        trailCanvas.width = window.innerWidth;
-        trailCanvas.height = window.innerHeight;
-    }
-    function updateTrail() {
-        trailPositions.unshift({ x: mouseX, y: mouseY, age: 0 });
-        if (trailPositions.length > 30) trailPositions.pop();
-        trailPositions.forEach(p => p.age++);
-        trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-        trailPositions.forEach(p => {
-            const op = Math.max(0, 1 - p.age / 30);
-            trailCtx.beginPath();
-            trailCtx.arc(p.x, p.y, 8 * (1 - p.age / 30), 0, Math.PI * 2);
-            trailCtx.fillStyle = `rgba(217,127,119,${op * 0.4})`;
-            trailCtx.fill();
+    let activeFilter = 'all';
+    let searchTerm   = '';
+
+    function applyCatalogFilter() {
+        const term = searchTerm.trim().toLowerCase();
+        let totalVisible = 0;
+
+        sections.forEach(section => {
+            const sectionCat = section.id === 'cantinho-fe'   ? 'fe'
+                             : section.id === 'cantinho-bebe' ? 'bebe'
+                             : section.id === 'personagens'   ? 'personagens'
+                             : null;
+
+            const categoryMatch = (activeFilter === 'all' || activeFilter === sectionCat);
+
+            if (!categoryMatch) {
+                section.classList.add('hidden-by-filter');
+                return;
+            }
+
+            const cards = section.querySelectorAll('.product-card');
+            let visibleCards = 0;
+            cards.forEach(card => {
+                const matchesTerm = !term || (card.dataset.title || '').includes(term);
+                card.style.display = matchesTerm ? '' : 'none';
+                if (matchesTerm) visibleCards++;
+            });
+
+            // se a seção tem categoria correspondente mas nenhum card visível pela busca, esconde a seção
+            section.classList.toggle('hidden-by-filter', visibleCards === 0);
+            totalVisible += visibleCards;
         });
-        requestAnimationFrame(updateTrail);
+
+        // estado vazio global
+        if (totalVisible === 0) {
+            emptyState.hidden = false;
+            emptyTerm.textContent = term || (CATEGORY_LABELS[activeFilter] || activeFilter);
+        } else {
+            emptyState.hidden = true;
+        }
+
+        searchClear.hidden = !term;
     }
-    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-    window.addEventListener('load', () => { initTrail(); updateTrail(); });
-    window.addEventListener('resize', initTrail);
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            applyCatalogFilter();
+        });
+    }
+    if (searchClear) {
+        searchClear.addEventListener('click', () => {
+            searchTerm = '';
+            searchInput.value = '';
+            applyCatalogFilter();
+            searchInput.focus();
+        });
+    }
+    if (emptyClearBtn) {
+        emptyClearBtn.addEventListener('click', () => {
+            searchTerm = '';
+            searchInput.value = '';
+            activeFilter = 'all';
+            filterChips.forEach(c => c.classList.toggle('active', c.dataset.cat === 'all'));
+            applyCatalogFilter();
+        });
+    }
+    filterChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            filterChips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            activeFilter = chip.dataset.cat;
+            applyCatalogFilter();
+
+            // rola até a seção correspondente, se uma categoria específica foi escolhida
+            if (activeFilter !== 'all') {
+                const targetId = activeFilter === 'fe' ? 'cantinho-fe'
+                              : activeFilter === 'bebe' ? 'cantinho-bebe'
+                              : 'personagens';
+                const targetEl = document.getElementById(targetId);
+                if (targetEl) {
+                    const navEl = document.querySelector('nav');
+                    const offset = (navEl ? navEl.offsetHeight : 60) + 80;
+                    window.scrollTo({ top: targetEl.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+                }
+            }
+        });
+    });
+
+    // chamada inicial após produtos carregarem
+    const filterWatcher = setInterval(() => {
+        if (loaded) {
+            clearInterval(filterWatcher);
+            applyCatalogFilter();
+        }
+    }, 250);
+
+    // ===== PARTÍCULAS DE FUNDO (sutis, leves, desligadas em mobile) =====
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canvas = document.getElementById('particles-canvas');
+
+    if (canvas && !isCoarsePointer && !isReducedMotion) {
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const count = Math.min(40, Math.floor((canvas.width * canvas.height) / 28000));
+            particles = Array.from({ length: count }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: 1 + Math.random() * 2.2,
+                speedX: (Math.random() - 0.5) * 0.3,
+                speedY: (Math.random() - 0.5) * 0.3,
+                color: `rgba(217, 127, 119, ${0.25 + Math.random() * 0.3})`
+            }));
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', initParticles);
+        initParticles();
+        animateParticles();
+    } else if (canvas) {
+        canvas.style.display = 'none';
+    }
 
     // Inicializar carrinho vazio (espera o load)
     renderCart();

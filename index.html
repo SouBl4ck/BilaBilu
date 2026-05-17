@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Montserrat:wght@300;500;600&display=swap" rel="stylesheet">
     <!-- CSS principal -->
-    <link rel="stylesheet" href="css/style2.css">
+    <link rel="stylesheet" href="css/style2.css?v=3">
     <link rel="shortcut icon" href="css/Imagens/imagem2.png" type="image/x-icon">
 </head>
 <body>
@@ -22,27 +22,11 @@
     <!-- Header -->
     <header>
         <div class="butterflies">
-            <span class="butterfly" style="top:5%; left:2%; animation-delay:0s; font-size:2.2rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:15%; left:85%; animation-delay:1.2s; font-size:2.8rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:60%; left:10%; animation-delay:2.5s; font-size:2rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:75%; left:70%; animation-delay:0.8s; font-size:3rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:30%; left:40%; animation-delay:3s; font-size:2.4rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:80%; left:20%; animation-delay:1.8s; font-size:2.6rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:45%; left:92%; animation-delay:2.2s; font-size:2.2rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:10%; left:60%; animation-delay:0.3s; font-size:3.2rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:70%; left:45%; animation-delay:2.7s; font-size:2rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:85%; left:80%; animation-delay:1.5s; font-size:2.8rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:25%; left:15%; animation-delay:3.2s; font-size:2.5rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
-            <span class="butterfly" style="top:50%; left:75%; animation-delay:0.5s; font-size:2.9rem;"><img src="css/Imagens/imagem1.png" alt=""></span>
+            <span class="butterfly" style="top:15%; left:6%;  animation-delay:0s;"><img src="css/Imagens/imagem1.png" alt=""></span>
+            <span class="butterfly" style="top:25%; left:88%; animation-delay:1.5s;"><img src="css/Imagens/imagem1.png" alt=""></span>
+            <span class="butterfly" style="top:70%; left:12%; animation-delay:2.8s;"><img src="css/Imagens/imagem1.png" alt=""></span>
+            <span class="butterfly" style="top:65%; left:80%; animation-delay:1s;"><img src="css/Imagens/imagem1.png" alt=""></span>
         </div>
-
-        <!-- Sparkles fixos no header -->
-        <span class="header-sparkle" style="top:12%; left:8%;  font-size:1.3rem; animation-duration:2.8s; animation-delay:0.3s;">✦</span>
-        <span class="header-sparkle" style="top:20%; right:7%; font-size:1rem;   animation-duration:3.2s; animation-delay:1.1s;">✦</span>
-        <span class="header-sparkle" style="bottom:18%; left:18%; font-size:1.1rem; animation-duration:2.5s; animation-delay:0.8s;">✦</span>
-        <span class="header-sparkle" style="bottom:12%; right:22%; font-size:1.4rem; animation-duration:3.6s; animation-delay:2s;">✦</span>
-        <span class="header-sparkle" style="top:45%; left:4%; font-size:0.9rem; animation-duration:2.9s; animation-delay:1.5s;">✦</span>
-        <span class="header-sparkle" style="top:60%; right:4%; font-size:1rem; animation-duration:3s; animation-delay:0.6s;">✦</span>
 
         <div class="header-content header-parallax">
             <div class="header-logo-row">
@@ -52,13 +36,16 @@
                     <span class="header-titulo-sub">Amigurumi</span>
                 </div>
             </div>
-            <p>✨ Uma peça artesanal única, feita ponto a ponto com muito amor.
-            <img src="css/Imagens/imagem3.png" alt=""></p>
+            <p class="header-tagline">
+                <i class="fas fa-sparkles" aria-hidden="true">✨</i>
+                Peças artesanais feitas ponto a ponto, com muito amor.
+            </p>
         </div>
     </header>
 
     <!-- Redes Sociais -->
     <div class="header-redes-sociais">
+        <span class="header-redes-label">Siga-nos</span>
         <a target="_blank" href="https://www.instagram.com/croche_bilabilu/" class="header-social-link" aria-label="Instagram">
             <i class="fab fa-instagram"></i>
         </a>
@@ -82,23 +69,78 @@
         </ul>
     </nav>
 
+    <!-- Hero / Selos de confiança -->
+    <section class="hero-strip">
+        <div class="container hero-strip-inner">
+            <div class="trust-item">
+                <i class="fas fa-hand-holding-heart"></i>
+                <div>
+                    <strong>100% Artesanal</strong>
+                    <span>Feito à mão com fio de algodão</span>
+                </div>
+            </div>
+            <div class="trust-item">
+                <i class="fas fa-truck"></i>
+                <div>
+                    <strong>Enviamos para todo o Brasil</strong>
+                    <span>Frete calculado por CEP</span>
+                </div>
+            </div>
+            <div class="trust-item">
+                <i class="fab fa-whatsapp"></i>
+                <div>
+                    <strong>Atendimento por WhatsApp</strong>
+                    <span>Tira-dúvidas e encomendas</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Barra de busca + filtros -->
+    <section class="catalog-toolbar">
+        <div class="container catalog-toolbar-inner">
+            <div class="catalog-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="catalog-search-input" placeholder="Buscar por nome do produto...">
+                <button class="catalog-search-clear" id="catalog-search-clear" hidden aria-label="Limpar busca">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="catalog-filters" id="catalog-filters" role="tablist">
+                <button class="catalog-chip active" data-cat="all"><i class="fas fa-th-large"></i> Todos</button>
+                <button class="catalog-chip" data-cat="fe"><i class="fas fa-praying-hands"></i> Cantinho da fé</button>
+                <button class="catalog-chip" data-cat="bebe"><i class="fas fa-baby"></i> Cantinho do bebê</button>
+                <button class="catalog-chip" data-cat="personagens"><i class="fas fa-puzzle-piece"></i> Personagens</button>
+            </div>
+        </div>
+    </section>
+
     <div class="container">
-        <section id="cantinho-fe">
+        <section id="cantinho-fe" class="catalog-section">
             <h2 class="section-title reveal">Cantinho da fé</h2>
             <div class="products" id="fe-container"></div>
         </section>
-        <section id="cantinho-bebe">
+        <section id="cantinho-bebe" class="catalog-section">
             <h2 class="section-title reveal">Cantinho do bebê</h2>
             <div class="products" id="bebe-container"></div>
         </section>
     </div>
 
-    <section class="collections" id="personagens">
+    <section class="collections catalog-section" id="personagens">
         <div class="container">
             <h2 class="section-title reveal">Personagens em crochê</h2>
             <div class="products" id="personagens-container"></div>
         </div>
     </section>
+
+    <!-- Mensagem quando a busca não encontra nada -->
+    <div class="container">
+        <div class="catalog-empty" id="catalog-empty" hidden>
+            <i class="fas fa-search"></i>
+            <p>Nenhum produto encontrado para "<span id="catalog-empty-term"></span>".</p>
+            <button class="btn" id="catalog-empty-clear">Limpar busca</button>
+        </div>
+    </div>
 
     <div class="container">
         <section id="sobre">
@@ -180,10 +222,10 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="js/catalogo.js"></script>
+    <script src="js/catalogo.js?v=2"></script>
 
     <script>
-      // ── Parallax no header ao rolar ──
+      // ── Parallax suave no header ──
       const headerEl      = document.querySelector('header');
       const parallaxEl    = document.querySelector('.header-parallax');
       const butterfliesEl = document.querySelector('.butterflies');
@@ -192,8 +234,8 @@
         const scrollY = window.scrollY;
         const limit   = headerEl.offsetHeight;
         if (scrollY < limit + 80) {
-          parallaxEl.style.transform    = `translateY(${scrollY * 0.38}px)`;
-          butterfliesEl.style.transform = `translateY(${scrollY * 0.18}px)`;
+          parallaxEl.style.transform    = `translateY(${scrollY * 0.28}px)`;
+          if (butterfliesEl) butterfliesEl.style.transform = `translateY(${scrollY * 0.14}px)`;
         }
       }, { passive: true });
 
@@ -215,7 +257,7 @@
           if (entry.isIntersecting) {
             const cards = entry.target.querySelectorAll('.product-card');
             cards.forEach((card, i) => {
-              card.style.animationDelay = `${i * 0.09}s`;
+              card.style.animationDelay = `${i * 0.08}s`;
             });
             gridObserver.unobserve(entry.target);
           }
@@ -231,35 +273,6 @@
           grids.forEach(g => gridObserver.observe(g));
         }
       }, 200);
-
-      // ── Sparkle ao mover o mouse ──
-      let lastSparkle = 0;
-      document.addEventListener('mousemove', (e) => {
-        const now = Date.now();
-        if (now - lastSparkle < 140) return;
-        lastSparkle = now;
-
-        const el = document.createElement('span');
-        el.textContent = '✦';
-        el.style.cssText = `
-          position: fixed;
-          left: ${e.clientX}px;
-          top:  ${e.clientY}px;
-          pointer-events: none;
-          z-index: 9999;
-          color: rgba(191,130,117,0.7);
-          font-size: ${0.55 + Math.random() * 0.65}rem;
-          transform: translate(-50%, -50%) scale(0);
-          transition: transform 0.3s cubic-bezier(0.2,0,0,1), opacity 0.5s ease;
-          user-select: none;
-        `;
-        document.body.appendChild(el);
-        requestAnimationFrame(() => {
-          el.style.transform = 'translate(-50%, -50%) scale(1) rotate(180deg)';
-          el.style.opacity   = '0';
-        });
-        setTimeout(() => el.remove(), 600);
-      });
     </script>
 </body>
 </html>
