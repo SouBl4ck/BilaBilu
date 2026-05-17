@@ -19,6 +19,14 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Garante que [hidden] e .hide sempre escondam — sobrescreve display:grid/flex etc. */
+[hidden],
+.hide { display: none !important; }
+
+/* Controle de telas via classe no <body> — não deixa margem pra dúvida */
+body:not(.logged-in) .app          { display: none !important; }
+body.logged-in       .login-screen { display: none !important; }
+
 html, body {
     font-family: 'Montserrat', sans-serif;
     color: var(--texto);

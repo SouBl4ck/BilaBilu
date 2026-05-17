@@ -53,20 +53,35 @@ function initIdentity() {
         toast('Netlify Identity indisponível', true);
         return;
     }
-    netlifyIdentity.on('init', user => user ? onLogin(user) : showLogin());
-    netlifyIdentity.on('login', user => { onLogin(user); netlifyIdentity.close(); });
-    netlifyIdentity.on('logout', () => { state.products = []; showLogin(); });
+    netlifyIdentity.on('init', user => {
+        console.log('[BilaBilu] Identity init →', user ? user.email : 'sem sessão');
+        user ? onLogin(user) : showLogin();
+    });
+    netlifyIdentity.on('login', user => {
+        console.log('[BilaBilu] evento login disparado');
+        onLogin(user);
+        netlifyIdentity.close();
+    });
+    netlifyIdentity.on('logout', () => {
+        console.log('[BilaBilu] evento logout disparado');
+        state.products = [];
+        showLogin();
+    });
+    netlifyIdentity.on('error', err => console.warn('[BilaBilu] Identity error', err));
     netlifyIdentity.init();
 }
 
 function showLogin() {
-    els['app'].hidden = true;
-    els['login-screen'].hidden = false;
+    document.body.classList.remove('logged-in');
+    els['app'].classList.add('hide');
+    els['login-screen'].classList.remove('hide');
 }
 
 function onLogin(user) {
-    els['login-screen'].hidden = true;
-    els['app'].hidden = false;
+    console.log('[BilaBilu] Login OK, exibindo painel.', user && user.email);
+    document.body.classList.add('logged-in');
+    els['login-screen'].classList.add('hide');
+    els['app'].classList.remove('hide');
     loadProducts();
 }
 
